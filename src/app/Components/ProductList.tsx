@@ -1,6 +1,7 @@
 import React from 'react'
 import { Product } from '../types';
 import AddToCart from './AddToCart';
+import Link from 'next/link';
 
 interface ProductListProps {
   products: Product[];
@@ -8,13 +9,14 @@ interface ProductListProps {
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
-    
     <div className="flex flex-wrap justify-center gap-4 pb-12">
       {products.map((product, index) => (
-        <div key={index} className="card bordered shadow-lg w-full md:w-96 h-full">
-          <figure className="h-64 overflow-hidden">
-            <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
-          </figure>
+        <div key={index} className="card bordered shadow-lg w-96 h-full">
+          <Link href={`product/${product.id}`}>
+            <figure className="h-64 overflow-hidden rounded-t-lg">
+              <img src={product.image} alt={product.title} className="w-full h-full object-cover" />
+            </figure>
+          </Link>
           <div className="card-body flex-grow">
             <h2 className="card-title">{product.title}</h2>
             <p className="description h-40 overflow-auto">{product.description}</p>

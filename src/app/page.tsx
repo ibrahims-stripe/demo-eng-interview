@@ -40,7 +40,9 @@ const Page = () => {
       <Hero />
       <div className='container mx-auto'>
         <h1 className='flex py-4 text-gray-800 justify-center'>Same say Coziest, we say Trending</h1>
+
         <ProductList products={products} />
+
       </div>
     </div>
   )
