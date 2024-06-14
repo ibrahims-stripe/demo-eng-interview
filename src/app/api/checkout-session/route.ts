@@ -1,13 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const lineItems = Object.values(body).map((item) => ({
+    const lineItems = Object.values(body).map((item: any) => ({
       price_data: {
         currency: 'usd',
         product_data: {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       },
 
     );
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
       { message: error.message },
       { status: 500 }

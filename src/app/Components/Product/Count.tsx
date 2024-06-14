@@ -22,7 +22,7 @@ const Count = ({ productId, product }: { productId: string, product: Product }) 
         }
         className="btn btn-primary join-item">-</button>
       <button
-        readOnly
+        aria-readonly
         className="btn join-item text-xl">
         {quantity}
       </button>

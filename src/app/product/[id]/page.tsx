@@ -12,14 +12,15 @@ const getProductWithPrice = async (productId: string) => {
   return { product, price };
 }
 
-export default async function Page({ params }: { params: { id: string } } = { params: { id: '' } }) {
+/* eslint-disable-next-line */
+export default async function Page({ params }: any) {
   const { product, price } = await getProductWithPrice(params.id);
   const baseProduct = {
     id: product.id,
     title: product.name,
-    description: product.description,
+    description: product.description as string,
     image: product.images[0],
-    price: price.unit_amount
+    price: price.unit_amount as number,
   }
 
   const productImageUrl = product.images[0];
