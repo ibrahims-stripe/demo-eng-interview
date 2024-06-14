@@ -1,47 +1,44 @@
 import React from 'react'
 import Hero from './Components/Hero'
 import ProductList from './Components/ProductList'
-import { Product } from './types'
+import Stripe from 'stripe'
 
-const products: Product[] = [
-  {
-    "id": "1",
-    "image": "https://via.placeholder.com/300x200?text=Organic+Cotton+Hoodie",
-    "title": "Organic Cotton Hoodie",
-    "description": "A super soft and sustainably made hoodie, perfect for cozy days. Made from 100% organic cotton, this hoodie is both comfortable and eco-friendly.",
-    "price": 4999
-  },
-  {
-    "id": "2",
-    "image": "https://via.placeholder.com/300x200?text=Recycled+Polyester+Backpack",
-    "title": "Recycled Polyester Backpack",
-    "description": "A stylish and durable backpack made from recycled polyester materials. Perfect for everyday use or outdoor adventures, with plenty of compartments to keep you organized.",
-    "price": 3999
-  },
-  {
-    "id": "3",
-    "image": "https://via.placeholder.com/300x200?text=Bamboo+Socks+(3-Pack)",
-    "title": "Bamboo Socks (3-Pack)",
-    "description": "A pack of three ultra-soft and breathable socks made from sustainable bamboo fibers. Available in a variety of colors, these socks are perfect for everyday wear.",
-    "price": 1499
-  },
-  {
-    "id": "4",
-    "image": "https://via.placeholder.com/300x200?text=Fair+Trade+Scarf",
-    "title": "Fair Trade Scarf",
-    "description": "A cozy and stylish scarf made from ethically sourced materials and produced under fair trade practices. This versatile accessory can be worn in multiple ways and adds a touch of warmth to any outfit.",
-    "price": 2499
-  }
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+
+const getProductWithPrice = async (productId: string) => {
+  const product = await stripe.products.retrieve(productId);
+  const prices = await stripe.prices.list({ product: product.id });
+  const price = prices.data[0];
+
+  return { product, price };
+}
+
+const productIdList: string[] = [
+  "prod_QHvHGcuVXUln7M",
+  "prod_QHvIxJ3XJrBIhe",
+  "prod_QHvKaEOiwFkZc4",
 ]
 
-const Page = () => {
+const Page = async () => {
+  const productsWithPrices = await Promise.all(
+    productIdList.map(async (productId) => {
+      const { product, price } = await getProductWithPrice(productId)
+      return {
+        "id": product.id,
+        "image": product.images[0], 
+        "title": product.name,
+        "description": product.description || '',
+        "price": price.unit_amount || 0,
+      }
+    })
+  )
+
   return (
     <div>
       <Hero />
-      <div className='container mx-auto'>
-        <h1 className='flex py-4 text-gray-800 justify-center'>Same say Coziest, we say Trending</h1>
-
-        <ProductList products={products} />
+      <div className='container mx-auto pb-12'>
+        <h1 className='flex py-6 text-lg font-bold text-gray-800 justify-center'>Trending @ Galtee Hygge </h1>
+        <ProductList products={productsWithPrices} />
 
       </div>
     </div>

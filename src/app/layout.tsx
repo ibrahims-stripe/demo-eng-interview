@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Components/Navbar/Navbar";
-import { CartContext, CartProvider } from "./context/cart";
+import { CartWrapper } from "./context";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "Basic E-commerce",
@@ -19,10 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CartProvider>
+        <CartWrapper>
           <Navbar />
+          <div className="w-full border-b " />
           {children}
-        </CartProvider>
+        </CartWrapper>
       </body>
     </html>
   );
