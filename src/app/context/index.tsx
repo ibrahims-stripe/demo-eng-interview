@@ -1,12 +1,14 @@
 'use client'
 
 import { createContext, use, useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const CartContext = createContext<any>(undefined);
 
 export function CartWrapper({ children }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [cart, setCart] = useState<{ [id: string]: { product: any, quantity: number } }>(() => {
     if (typeof window !== 'undefined') {
       const storedCart = window.localStorage.getItem('cart');
@@ -30,6 +32,13 @@ export function CartWrapper({ children }: {
     setTotalPrice(price);
 
   }, [cart]);
+
+  useEffect(() => {
+    if (pathname.includes('/success')) {
+      window.localStorage.removeItem('cart');
+      setCart({});
+    }
+  }, [pathname]);
 
   const addToCart = (product: any) => {
     const productId = product.id;
