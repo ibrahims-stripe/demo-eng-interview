@@ -6,11 +6,29 @@ import Stripe from 'stripe'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 const getProductWithPrice = async (productId: string) => {
-  const product = await stripe.products.retrieve(productId);
-  const prices = await stripe.prices.list({ product: product.id });
-  const price = prices.data[0];
+  try {
+    const product = await stripe.products.retrieve(productId);
+    const prices = await stripe.prices.list({ product: product.id });
+    const price = prices.data[0];
 
-  return { product, price };
+    return { product, price };
+  }
+  catch (error) {
+    console.error('Error:', error);
+    return {
+      product: {
+        "id": '',
+        "images": [
+          'https://via.placeholder.com/300x300'
+        ],
+        "name": 'Product Not Found',
+        "description": 'This product is not available at the moment. Please check back later.',
+      },
+      price: {
+        "unit_amount": 0
+      }, 
+    }
+  }
 }
 
 const productIdList: string[] = [
@@ -39,7 +57,6 @@ const Page = async () => {
       <div className='container mx-auto pb-12'>
         <h1 className='flex py-6 text-lg font-bold text-gray-800 justify-center'>Trending @ Galtee Hygge </h1>
         <ProductList products={productsWithPrices} />
-
       </div>
     </div>
   )

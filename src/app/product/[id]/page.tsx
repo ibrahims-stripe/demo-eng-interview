@@ -1,4 +1,5 @@
 import Count from '@/app/Components/Product/Count';
+import Link from 'next/link';
 import React from 'react'
 import { Stripe } from 'stripe';
 
@@ -43,6 +44,9 @@ export default async function Page({ params }: any) {
             {price.unit_amount && <div className="font-bold text-2xl">${(price.unit_amount / 100).toFixed(2)}</div>}
             <Count productId={params.id} product={baseProduct} />
           </div>
+          <Link className="btn btn-primary w-full text-white my-6" href="/cart">
+            Go To Checkout
+          </Link>
         </div>
       </div>
     </div>

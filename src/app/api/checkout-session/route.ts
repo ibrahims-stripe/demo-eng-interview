@@ -32,13 +32,8 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      {
-        url: session.url
-      },
-      {
-        status: 200,
-      },
-
+      { url: session.url },
+      { status: 200 },
     );
   } catch (error: any) {
     return NextResponse.json(

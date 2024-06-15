@@ -3,7 +3,7 @@
 import React from 'react'
 import CartList from '../Components/Cart/CartList'
 import { useCartContext } from '../context'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js';
 
 const Page = () => {
   const { cart, totalPrice } = useCartContext()
@@ -32,7 +32,7 @@ const Page = () => {
     <>
       <div className='container mx-auto'>
         <CartList  />
-        <div className='flex w-full justify-between'>
+        <div className='flex w-full justify-between py-12'>
           <button
             className="btn btn-primary text-white justify-start"
             onClick={() => handleCheckout()}

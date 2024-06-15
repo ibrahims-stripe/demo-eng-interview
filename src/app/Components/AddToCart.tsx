@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Product } from '../types'
 import { useCartContext } from '../context'
 
@@ -9,17 +9,26 @@ type AddToCartProps = {
 }
 
 const AddToCart = ({ product }: AddToCartProps) => {
-
+  const [clicked, setClicked] = useState(false)
   const { addToCart } = useCartContext()
 
+  useEffect(() => {
+    setTimeout(() => {
+      setClicked(false)
+    }, 800)
+  }, [clicked])
+
   const handleAddToCart = () => {
+    setClicked(true)
     addToCart(product)
   }
 
   return (
-    <button className="btn btn-primary text-white"
+    <button
+      className={`btn btn-primary text-white ${clicked && 'btn-success'}`}
       onClick={() => handleAddToCart()}
-    >Add to Cart
+    >
+      {clicked ? 'Added To Cart' : 'Add to Cart'}
     </button>
   )
 }

@@ -39,7 +39,6 @@ const CartList = () => {
       <div className="flex items-center space-x-3">
         <div className="avatar">
           <div className="mask mask-squircle w-12 h-12">
-            {/* Type assertion */}
             <img src={(item as CartItem).product.image} alt={(item as CartItem).product.title} />
           </div>
         </div>
