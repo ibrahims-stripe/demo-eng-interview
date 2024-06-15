@@ -1,12 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Product } from '../types'
-import { useCartContext } from '../context'
+import { useCartContext } from '@/app/context'
+import { AddToCartProps } from '@/app/types'
 
-type AddToCartProps = {
-  product: Product
-}
 
 const AddToCart = ({ product }: AddToCartProps) => {
   const [clicked, setClicked] = useState(false)

@@ -8,6 +8,7 @@ interface ProductListProps {
 }
 
 const ProductList = ({ products }: ProductListProps) => {
+  
   return (
     <div className="flex flex-wrap justify-center gap-4 pb-12">
       {products.map((product, index) => {

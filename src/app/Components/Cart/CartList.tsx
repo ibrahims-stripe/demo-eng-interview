@@ -2,16 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useCartContext } from '@/app/context';
+import { CartItem } from '@/app/types';
 
-type CartItem  = {
-  product: {
-    id: string;
-    title: string;
-    image: string;
-    price: number;
-  };
-  quantity: number;
-}
 
 const CartList = () => {
   const { cart, incrementProduct, decrementProduct, removeFromCart } = useCartContext()
@@ -30,6 +22,7 @@ const CartList = () => {
             <th>Price</th>
             <th>Quantity</th>
             <th>Sub-Total</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -37,8 +30,8 @@ const CartList = () => {
   <tr key={key}>
     <td>
       <div className="flex items-center space-x-3">
-        <div className="avatar">
-          <div className="mask mask-squircle w-12 h-12">
+        <div className="border rounded-lg">
+          <div className="w-24 h-24 ">
             <img src={(item as CartItem).product.image} alt={(item as CartItem).product.title} />
           </div>
         </div>
@@ -66,7 +59,7 @@ const CartList = () => {
       </div>
     </td>
     <td>${((item as CartItem).product.price * (item as CartItem).quantity / 100).toFixed(2)}</td>
-    <th>
+    <td>
       <button
         onClick={() => removeFromCart((item as CartItem).product.id)}
         className="btn btn-ghost btn-sm"
@@ -85,7 +78,7 @@ const CartList = () => {
           ></path>
         </svg>
       </button>
-    </th>
+    </td>
   </tr>
 ))}
         </tbody>

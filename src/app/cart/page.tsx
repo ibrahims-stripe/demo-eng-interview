@@ -1,18 +1,18 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import CartList from '../Components/Cart/CartList'
 import { useCartContext } from '../context'
 import { loadStripe } from '@stripe/stripe-js';
 
 const Page = () => {
+  const [loading, setLoading] = useState(false)
   const { cart, totalPrice } = useCartContext()
 
   const handleCheckout = async () => {
-    const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`);
-
     try {
-      const stripe = await stripePromise;
+      setLoading(true)
+      loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`);
       const response = await fetch('/api/checkout-session', {
         method: 'POST',
         headers: {
@@ -25,6 +25,8 @@ const Page = () => {
       window.location.href = session.url;
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -37,7 +39,7 @@ const Page = () => {
             className="btn btn-primary text-white justify-start"
             onClick={() => handleCheckout()}
           >
-            Buy Now
+            { loading ? 'Loading' : 'Buy Now' }
           </button>
           <div className='justify-end'>
             <span className="font-bold">Total Price:</span> ${totalPrice / 100}

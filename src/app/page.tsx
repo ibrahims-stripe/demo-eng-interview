@@ -1,7 +1,8 @@
-import React from 'react'
-import Hero from './Components/Hero'
-import ProductList from './Components/ProductList'
+import React, { Suspense } from 'react'
 import Stripe from 'stripe'
+import Hero from '@/app/Components/Hero'
+import ProductList from '@/app/Components/ProductList'
+import LoadingSkeleton from './LoadingSkeleton'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -26,7 +27,7 @@ const getProductWithPrice = async (productId: string) => {
       },
       price: {
         "unit_amount": 0
-      }, 
+      },
     }
   }
 }
@@ -43,7 +44,7 @@ const Page = async () => {
       const { product, price } = await getProductWithPrice(productId)
       return {
         "id": product.id,
-        "image": product.images[0], 
+        "image": product.images[0],
         "title": product.name,
         "description": product.description || '',
         "price": price.unit_amount || 0,
@@ -56,7 +57,9 @@ const Page = async () => {
       <Hero />
       <div className='container mx-auto pb-12'>
         <h1 className='flex py-6 text-lg font-bold text-gray-800 justify-center'>Trending @ Galtee Hygge </h1>
-        <ProductList products={productsWithPrices} />
+        <Suspense fallback={<LoadingSkeleton />}>
+          <ProductList products={productsWithPrices} />
+        </Suspense>
       </div>
     </div>
   )

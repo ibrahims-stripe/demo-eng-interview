@@ -1,6 +1,6 @@
 import React from 'react'
 
-const loading = () => {
+const LoadingSkeleton = () => {
   return (
     <div className='flex items-center justify-center min-h-screen'>
       <div className='text-center'>
@@ -10,4 +10,4 @@ const loading = () => {
   )
 }
 
-export default loading
+export default LoadingSkeleton
